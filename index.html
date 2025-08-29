@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chair E-Commerce</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .product-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 300px;
+      margin: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+    }
+    .product-card h3 {
+      margin: 1rem 0 0.5rem;
+    }
+    .product-card p {
+      color: #777;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+    }
+    .product-card .price {
+      color: #333;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .product-card button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .product-card button:hover {
+      background-color: #0056b3;
+    }
+    .cart-info {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 1rem auto;
+      padding: 1rem;
+      width: 80%;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .cart-info h3 {
+      margin: 0.5rem 0;
+    }
+    .cart-info button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .cart-info button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Chair E-Commerce Store</h1>
+  </header>
+
+  <!-- Cart Information -->
+  <div class="cart-info" id="cart-info">
+    <h3>Total Items: <span id="total-items">0</span></h3>
+    <h3>Total Amount: $<span id="total-amount">0</span></h3>
+    <button id="book-now" onclick="bookNow()" style="display: none;">Book Now</button>
+  </div>
+
+  <!-- Product List -->
+  <div class="container" id="product-list"></div>
+
+  <script>
+    // Global cart state
+    const cart = {
+      totalItems: 0,
+      totalAmount: 0
+    };
+
+    // Dummy product data
+    const products = [
+      {
+        name: "Modern Chair",
+        description: "A sleek and stylish modern chair.",
+        price: 120,
+        image: "https://via.placeholder.com/300x200?text=Modern+Chair"
+      },
+      {
+        name: "Classic Chair",
+        description: "A timeless classic wooden chair.",
+        price: 150,
+        image: "https://via.placeholder.com/300x200?text=Classic+Chair"
+      },
+      {
+        name: "Ergonomic Chair",
+        description: "Perfect for office and home workspaces.",
+        price: 200,
+        image: "https://via.placeholder.com/300x200?text=Ergonomic+Chair"
+      },
+      {
+        name: "Gaming Chair",
+        description: "Designed for ultimate comfort during long gaming sessions.",
+        price: 250,
+        image: "https://via.placeholder.com/300x200?text=Gaming+Chair"
+      }
+    ];
+
+    // Function to create a product card
+    function createProductCard(product) {
+      const productCard = document.createElement("div");
+      productCard.classList.add("product-card");
+
+      productCard.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <div class="price">$${product.price}</div>
+        <button onclick="addToCart(${product.price}, '${product.name}')">Add to Cart</button>
+      `;
+
+      return productCard;
+    }
+
+    // Function to render products
+    function renderProducts() {
+      const productList = document.getElementById("product-list");
+      productList.innerHTML = ""; // Clear existing content
+
+      products.forEach(product => {
+        const productCard = createProductCard(product);
+        productList.appendChild(productCard);
+      });
+    }
+
+    // Function to handle "Add to Cart" action
+    function addToCart(price, productName) {
+      cart.totalItems += 1;
+      cart.totalAmount += price;
+
+      updateCartInfo();
+      alert(`${productName} has been added to your cart!`);
+    }
+
+    // Function to update the cart display
+    function updateCartInfo() {
+      document.getElementById("total-items").innerText = cart.totalItems;
+      document.getElementById("total-amount").innerText = cart.totalAmount.toFixed(2);
+
+      // Show the "Book Now" button if there are items in the cart
+      const bookNowButton = document.getElementById("book-now");
+      if (cart.totalItems > 0) {
+        bookNowButton.style.display = "inline-block";
+      } else {
+        bookNowButton.style.display = "none";
+      }
+    }
+
+    // Function to handle "Book Now" action
+    function bookNow() {
+      alert(`Thank you for booking! Total amount to be paid: $${cart.totalAmount.toFixed(2)}`);
+      // Reset cart
+      cart.totalItems = 0;
+      cart.totalAmount = 0;
+      updateCartInfo();
+    }
+
+    // Initialize the page
+    renderProducts();
+  </script>
+</body>
+</html>
